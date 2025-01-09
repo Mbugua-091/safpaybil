@@ -28,7 +28,21 @@ export async function POST(req: Request) {
       }
     );
     return NextResponse.json(response.data);
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+  } catch (error: unknown) {
+    // Narrowing down the 'error' type to handle Axios errors
+    if (axios.isAxiosError(error)) {
+      return NextResponse.json(
+        { error: error.response?.data || error.message },
+        { status: error.response?.status || 500 }
+      );
+    }
+
+    // Handling general errors
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    // Fallback for any other unknown error types
+    return NextResponse.json({ error: "Unknown error occurred" }, { status: 500 });
   }
 }
