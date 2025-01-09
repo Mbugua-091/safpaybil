@@ -18,6 +18,13 @@ export default function Home() {
       body: JSON.stringify({ token }),
     });
     const data = await res.json();
+  // If token is expired, regenerate it and retry the request
+  if (data.error && data.error.errorCode === "401.003.01") {
+    alert("Token expired! Regenerating token...");
+    await generateToken(); // Regenerate token
+    return registerURLs(); // Retry the register URLs call
+  }
+ 
     setMessage(`Register URLs: ${JSON.stringify(data)}`);
   }
 
