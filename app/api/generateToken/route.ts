@@ -16,6 +16,7 @@ export async function GET() {
       }
     );
     return NextResponse.json(response.data);
+    console.log(response.data);
   } catch (error: unknown) {
     // Narrowing down the 'error' type
     if (axios.isAxiosError(error)) {

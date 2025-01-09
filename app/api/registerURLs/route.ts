@@ -8,6 +8,8 @@ interface RegisterURLsRequest {
 export async function POST(req: Request) {
   const body: RegisterURLsRequest = await req.json();
   const { token } = body;
+  console.log("Token:", token);  // Log the token for debugging purposes
+
 
   const data = {
     ShortCode: "600000", // Sandbox shortcode
